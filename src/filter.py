@@ -16,12 +16,6 @@ def fuzzyfinder(user_input, collection):
             suggestions.append((len(match.group()), match.start(), item))
     return [x for _, _, x in sorted(suggestions)]
 
-def create_item(path):
-    return {
-        'title': path,
-        'arg': path
-    }
-
 items = []
 for root, dirs, files in os.walk("/Users/tor/.password-store", topdown=False):
     for name in files:
