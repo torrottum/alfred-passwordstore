@@ -26,10 +26,10 @@ items = []
 for root, dirs, files in os.walk("/Users/tor/.password-store", topdown=False):
     for name in files:
         if fnmatch.fnmatch(os.path.join(root, name), '*.gpg'):
-            fullPath = os.path.join(root, name).replace('/Users/tor/.password-store/', '')
-            items.append(os.path.splitext(fullPath)[0])
+            path = os.path.join(root, name).replace('/Users/tor/.password-store/', '')
+            items.append(os.path.splitext(path)[0])
 
-query = ' '.join(sys.argv[1:]).replace(' ', '/')
+query = sys.argv[1].replace(' ', '/')
 
 items = fuzzyfinder(query, items)
 items = list(map(lambda path: {'title': path, 'arg': path}, items))
