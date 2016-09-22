@@ -16,11 +16,12 @@ def fuzzyfinder(user_input, collection):
             suggestions.append((len(match.group()), match.start(), item))
     return [x for _, _, x in sorted(suggestions)]
 
+homepath = os.path.expanduser('~/.password-store') + '/'
 items = []
-for root, dirs, files in os.walk("/Users/tor/.password-store", topdown=False):
+for root, dirs, files in os.walk(homepath, topdown=False):
     for name in files:
         if fnmatch.fnmatch(os.path.join(root, name), '*.gpg'):
-            path = os.path.join(root, name).replace('/Users/tor/.password-store/', '')
+            path = os.path.join(root, name).replace(homepath, '')
             items.append(os.path.splitext(path)[0])
 
 query = sys.argv[1].replace(' ', '/')
