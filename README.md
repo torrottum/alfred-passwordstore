@@ -1,6 +1,8 @@
 # alfred-passwordstore
 [Pass](https://www.passwordstore.org/) workflow for Alfred with fuzzy matching
 
+**NOTE:** This doesn't clear the clipboard
+
 ## Installation
 ```
 git clone https://github.com/torrottum/alfred-passwordstore
