@@ -12,4 +12,3 @@ make
 
 ## Credits
 - Icon made by [Pixel Buddha](http://www.flaticon.com/authors/pixel-buddha) from [flaticon.com](http://www.flaticon.com) is licensed with [Creative Commons BY 3.0](http://creativecommons.org/licenses/by/3.0/)
-- Fuzzy matching algorithm is made by [Amjith Ramanujam](http://blog.amjith.com/fuzzyfinder-in-10-lines-of-python)
