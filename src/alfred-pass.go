@@ -2,8 +2,7 @@ package main
 
 import (
 	"encoding/json"
-	// "fmt"
-	"github.com/renstrom/fuzzysearch/fuzzy"
+	"github.com/sahilm/fuzzy"
 	"log"
 	"os"
 	"path/filepath"
@@ -20,32 +19,35 @@ type Result struct {
 }
 
 func main() {
-	passDir := os.Getenv("PASSWORD_STORE_DIR")
-
-	if len(passDir) == 0 {
-		passDir = os.Getenv("HOME") + "/.password-store/"
+	if len(os.Args) == 1 {
+		// just exit silently if no argument
+		os.Exit(0)
 	}
 
 	query := strings.Replace(os.Args[1], " ", "/", -1)
 
-	files, err := filepath.Glob(passDir + "**/*.gpg")
+	passDir := os.Getenv("PASSWORD_STORE_DIR")
+	if len(passDir) == 0 {
+		passDir = os.Getenv("HOME") + "/.password-store/"
+	}
 
+	files, err := filepath.Glob(passDir + "**/*.gpg")
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	matches := fuzzy.Find(query, files)
-	results := make([]Result, len(matches))
-
 	r := strings.NewReplacer(passDir, "", ".gpg", "")
-	for i, match := range matches {
-		title := r.Replace(match)
-		results[i] = Result{title, match}
+	for i, file := range files {
+		files[i] = r.Replace(file)
 	}
 
-	items := Items{results}
+	matches := fuzzy.Find(query, files)
+	results := make([]Result, len(matches))
+	for i, match := range matches {
+		title := match.Str
+		results[i] = Result{title, passDir + title + ".gpg"}
+	}
 
-	b, err := json.Marshal(items)
-
+	b, err := json.Marshal(Items{results})
 	os.Stdout.Write(b)
 }

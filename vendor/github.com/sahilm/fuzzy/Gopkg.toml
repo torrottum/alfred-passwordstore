@@ -22,9 +22,5 @@
 
 
 [[constraint]]
-  name = "github.com/renstrom/fuzzysearch"
-  version = "1.0.0"
-
-[[constraint]]
-  name = "github.com/sahilm/fuzzy"
-  version = "0.0.3"
+  branch = "master"
+  name = "github.com/kylelemons/godebug"
