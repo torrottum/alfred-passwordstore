@@ -2,11 +2,12 @@ package main
 
 import (
 	"encoding/json"
-	"github.com/sahilm/fuzzy"
-	"log"
 	"os"
+	"path"
 	"path/filepath"
 	"strings"
+
+	"github.com/sahilm/fuzzy"
 )
 
 type Items struct {
@@ -31,14 +32,24 @@ func main() {
 		passDir = os.Getenv("HOME") + "/.password-store/"
 	}
 
-	files, err := filepath.Glob(passDir + "**/*.gpg")
+	files := []string{}
+	err := filepath.Walk(passDir, func(p string, f os.FileInfo, err error) error {
+		if path.Ext(p) != ".gpg" {
+			return nil
+		}
+
+		files = append(files, p)
+		return nil
+	})
+
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 
-	r := strings.NewReplacer(passDir, "", ".gpg", "")
 	for i, file := range files {
-		files[i] = r.Replace(file)
+		file = strings.TrimPrefix(file, passDir)
+		file = strings.TrimSuffix(file, ".gpg")
+		files[i] = file
 	}
 
 	matches := fuzzy.Find(query, files)
